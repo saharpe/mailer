@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const dotenv = require('dotenv');
 const nodemailer = require('nodemailer');
 
@@ -7,20 +8,26 @@ const app = express();
 dotenv.config();
 
 // Middlewares
-app.use(express.urlencoded({ extended: false }));
+app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 // Service endpoint
 app.post('/email/send', async (req, res) => {
 
     // HTML output of the email
     const output = `
-        <h2><u> New Contact Request </u></h2>
+        <h2>
+            <u> New Contact Request </u>
+        </h2>
         <h3> Contact details </h3>
         <ul>
-            <li> Name: ${req.body.name} </li>
-            <li> Email: ${req.body.email} </li>
-            <li> Phone: ${req.body.phone} </li>
+            <li> 
+                <u> Name: </u> ${req.body.name} 
+            </li>
+            <li> 
+                <u> Email: </u> ${req.body.email} 
+            </li>
         </ul>
         <h3> Message </h3>
         <p> ${req.body.message} </p>
@@ -38,7 +45,7 @@ app.post('/email/send', async (req, res) => {
     try {
         let info = await transporter.sendMail({
             from: 'Mailer <saharpe.mailer@gmail.com>',
-            to: "ptz.sahar@gmail.com",
+            to: "saharpe.dev@gmail.com",
             subject: "New Contact Request",
             html: output,
         });
